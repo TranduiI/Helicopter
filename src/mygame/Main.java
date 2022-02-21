@@ -59,13 +59,13 @@ public class Main extends SimpleApplication{
         cam.setViewPort(.5f, 1f, 0.375f, 0.625f);
         cam.setLocation(new Vector3f(0, 0, 5f));
         
-       // cam.setRotation(new Quaternion(-0.07680723f, 0.92299235f, -0.2564353f, -0.27645364f));
+        //cam.setRotation(new Quaternion(1, 0, 0, 0));
         
         // Setup second view
         Camera cam2 = cam.clone();
         cam2.setViewPort(0.25f, 0.75f, 0f, 0.25f);
-        cam2.setLocation(new Vector3f(0, 0, 5f));
-       // cam2.setRotation(new Quaternion(0.0010108891f, 0.99857414f, -0.04928594f, 0.020481428f));
+        cam2.setLocation(new Vector3f(5, 0, 0));
+        cam2.setRotation(new Quaternion(0f, 0.71f, 0f, -0.71f));
 
         ViewPort view2 = renderManager.createMainView("Bottom", cam2);
         view2.setClearFlags(true, true, true);
