@@ -10,10 +10,13 @@ import com.jme3.input.KeyInput;
 
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 
@@ -44,14 +47,35 @@ public class Main extends SimpleApplication{
     public void simpleInitApp() {
         Geometry teaGeom = (Geometry) assetManager.loadModel("Models/heli.obj");
         teaGeom.scale((float) 0.0005);
+
+        DirectionalLight dl1 = new DirectionalLight();
+        dl1.setDirection(new Vector3f(1, -1, 1).normalizeLocal());
+        dl1.setColor(ColorRGBA.White);
+        rootNode.addLight(dl1);
+
         DirectionalLight dl = new DirectionalLight();
+        dl.setDirection(new Vector3f(-1, -1, -1).normalizeLocal());
         dl.setColor(ColorRGBA.White);
-        dl.setDirection(Vector3f.UNIT_XYZ.negate());
+        rootNode.addLight(dl);
+         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+
+        SSAOFilter ssao = new SSAOFilter();//0.49997783f, 42.598858f, 35.999966f, 0.39299846f
+        fpp.addFilter(ssao);
+
         
+
+        viewPort.addProcessor(fpp);
+
+// DirectionalLight dl = new DirectionalLight();
+        //dl.setColor(ColorRGBA.White);
+        //dl.setDirection(Vector3f.UNIT_XYZ.negate());
+        
+        //AmbientLight dl = new AmbientLight();
+        //dl.setColor(ColorRGBA.Gray);
         /* Update the model. Now it's vertical. */
       
 
-        rootNode.addLight(dl);
+        //rootNode.addLight(dl);
         rootNode.attachChild(teaGeom);
 
         // Setup first view
@@ -59,13 +83,13 @@ public class Main extends SimpleApplication{
         cam.setViewPort(.5f, 1f, 0.375f, 0.625f);
         cam.setLocation(new Vector3f(0, 0, 5f));
         
-        //cam.setRotation(new Quaternion(1, 0, 0, 0));
+        cam.setRotation(new Quaternion(0.71f, -0.71f, 0, 0));
         
         // Setup second view
         Camera cam2 = cam.clone();
         cam2.setViewPort(0.25f, 0.75f, 0f, 0.25f);
         cam2.setLocation(new Vector3f(5, 0, 0));
-        cam2.setRotation(new Quaternion(0f, 0.71f, 0f, -0.71f));
+        cam2.setRotation(new Quaternion(0.71f, 0f, -0.71f, 0f));
 
         ViewPort view2 = renderManager.createMainView("Bottom", cam2);
         view2.setClearFlags(true, true, true);
@@ -74,8 +98,8 @@ public class Main extends SimpleApplication{
         // Setup third view
         Camera cam3 = cam.clone();
         cam3.setViewPort(0f, 0.5f, 0.375f, 0.625f);
-        cam3.setLocation(new Vector3f(0, 0, 5f));
-       // cam3.setRotation(new Quaternion(0.00044f, 0.68f, -0.7f, 0f));
+        cam3.setLocation(new Vector3f(0, 0, -5));
+        cam3.setRotation(new Quaternion(0f, 0f, 0.71f, 0.71f));
 
         ViewPort view3 = renderManager.createMainView("Left", cam3);
         view3.setClearFlags(true, true, true);
@@ -84,8 +108,8 @@ public class Main extends SimpleApplication{
         // Setup fourth view
         Camera cam4 = cam.clone();
         cam4.setViewPort(.25f, 0.75f, .75f, 1f);
-        cam4.setLocation(new Vector3f(0, 0, 5f));
-        //cam4.setRotation(new Quaternion(0.02356979f, -0.74957186f, 0.026729556f, 0.66096294f));
+        cam4.setLocation(new Vector3f(-5, 0, 0));
+        cam4.setRotation(new Quaternion(0f, -0.71f, 0f, -0.71f));
         
         
         ViewPort view4 = renderManager.createMainView("Top", cam4);
